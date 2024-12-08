@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AbsensiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/login', function () {
+    return response()->json(['message' => 'Unauthenticated.'], 401);
+})->name('login');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/absensi/masuk', [AbsensiController::class, 'absenMasuk']);
+    Route::post('/absensi/keluar', [AbsensiController::class, 'absenKeluar']);
+    Route::get('/absensi/riwayat', [AbsensiController::class, 'riwayat']);
 });

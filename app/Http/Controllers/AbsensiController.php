@@ -29,4 +29,11 @@ class AbsensiController extends Controller {
         return response()->json(['message' => 'Absen keluar berhasil', 'data' => $absensi]);
     }
 
+
+    public function riwayat($karyawan_id)
+    {
+        $riwayat = Absensi::where('karyawan_id', $karyawan_id)->get();
+        return response()->json($riwayat);
+    }
+
 }

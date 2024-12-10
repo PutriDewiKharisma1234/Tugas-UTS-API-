@@ -3,26 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        // Validasi input
+        $credentials = $request->only('email', 'password');
 
-        if (!auth()->attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        if (Auth::attempt($credentials)) {
+            // Autentikasi berhasil
+            return response()->json([
+                'message' => 'Login berhasil',
+            ]);
         }
 
-        $token = auth()->user()->createToken('API Token')->plainTextToken;
-
+        // Jika gagal autentikasi
         return response()->json([
-            'message' => 'Login successful',
-            'token' => $token,
-        ]);
+            'message' => 'Gagal login',
+        ], 401);
     }
 
+    public function logout()
+    {
+        Auth::logout(); // Keluar dari sesi
+
+        return response()->json([
+            'message' => 'Logout berhasil',
+        ]);
+    }
 }

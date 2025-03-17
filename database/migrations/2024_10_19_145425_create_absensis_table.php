@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penggunas', function (Blueprint $table) {
+        Schema::create('absensis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role', ['admin', 'karyawan'])->default('karyawan');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->date('tanggal');
+            $table->enum('status', ['Tepat Waktu', 'Telat'])->nullable();
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penggunas');
+        Schema::dropIfExists('absensis');
     }
 };
